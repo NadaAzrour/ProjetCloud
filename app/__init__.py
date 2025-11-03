@@ -9,7 +9,7 @@ def create_app():
 
     # Configuration MySQL
     app.config['MYSQL_HOST'] = 'localhost'
-    app.config['MYSQL_PORT'] = 3306            # <-- Ici le port correct
+    app.config['MYSQL_PORT'] = 3307            # <-- Ici le port correct
     app.config['MYSQL_USER'] = 'root'
     app.config['MYSQL_PASSWORD'] = ''          # ton mot de passe MySQL
     app.config['MYSQL_DB'] = 'todolist'
