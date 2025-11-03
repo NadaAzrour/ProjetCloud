@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - ToDo List Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- Barre de navigation -->
+    <nav class="bg-indigo-600 text-white px-6 py-4 flex justify-between items-center shadow-lg">
+        <h1 class="text-2xl font-bold">ToDo List Cloud ☁</h1>
+        <a href="/" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+      Déconnexion
+    </a>
+    </nav>
+
+    <div class="max-w-4xl mx-auto mt-10 bg-white rounded-2xl shadow-lg p-8">
+
+        <h2 class="text-3xl font-bold text-indigo-600 mb-6 text-center">Tableau de Bord</h2>
+
+        <!-- Formulaire d'ajout de tâche -->
+        <form action="/tasks" method="POST" class="mb-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <input type="text" name="title" placeholder="Titre de la tâche" class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-indigo-400" required>
+
+            <select name="priority" class="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400">
+        <option value="Basse">Basse</option>
+        <option value="Moyenne">Moyenne</option>
+        <option value="Haute">Haute</option>
+      </select>
+
+            <select name="category" class="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400">
+        <option value="Travail">Travail</option>
+        <option value="Études">Études</option>
+        <option value="Personnel">Personnel</option>
+      </select>
+
+            <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg px-4 py-2 transition">
+        ➕ Ajouter
+      </button>
+        </form>
+
+        <!-- Liste des tâches -->
+        <div>
+            {% if tasks %}
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-indigo-600 uppercase text-sm">
+                        <th class="py-3 px-4">Tâche</th>
+                        <th class="py-3 px-4">Priorité</th>
+                        <th class="py-3 px-4">Catégorie</th>
+                        <th class="py-3 px-4 text-center">Statut</th>
+                        <th class="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="py-3 px-4 {% if task[4] %}line-through text-gray-400{% endif %}">
+                            {{ task[1] }}
+                        </td>
+                        <td class="py-3 px-4">{{ task[2] }}</td>
+                        <td class="py-3 px-4">{{ task[3] }}</td>
+                        <td class="py-3 px-4 text-center">
+                            {% if task[4] %}
+                            <span class="text-green-600 font-semibold">Terminée</span> {% else %}
+                            <span class="text-yellow-500 font-semibold">En cours</span> {% endif %}
+                        </td>
+                        <td class="py-3 px-4 flex justify-center gap-3">
+                            <a href="{{ url_for('main.toggle', id=task[0]) }}" class="text-blue-500 hover:text-blue-700 font-semibold">✔</a>
+                            <a href="{{ url_for('main.delete', id=task[0]) }}" class="text-red-500 hover:text-red-700 font-semibold">🗑</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-gray-500 text-center mt-6">Aucune tâche pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+
+</html>

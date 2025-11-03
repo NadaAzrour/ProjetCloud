@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo List Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+
+    <div class="text-center">
+        <h1 class="text-5xl font-extrabold text-indigo-600 mb-4">ToDo List Cloud</h1>
+        <p class="text-lg text-gray-600 mb-8">
+            Gérez vos tâches depuis n’importe où, en toute simplicité ☁
+        </p>
+
+        <div class="space-x-4">
+            <a href="{{ url_for('main.login') }}" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg transition">
+        Se connecter
+      </a>
+
+            <a href="{{ url_for('main.register') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-xl shadow-lg transition">
+        Créer un compte
+      </a>
+
+            <a href="{{ url_for('main.tasks') }}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg transition">
+        Voir mes tâches
+      </a>
+        </div>
+    </div>
+
+</body>
+
+</html>
