@@ -1,43 +1,71 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Connexion - ToDo List Cloud</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <meta charset="UTF-8">
+  <title>Connexion - ToDo List Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
-
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
-    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-        <h2 class="text-3xl font-bold text-center text-indigo-600 mb-6">Connexion</h2>
+  <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-indigo-600 mb-6">Connexion</h2>
 
-        <form id="loginForm" class="space-y-5">
-            <div>
-                <label class="block text-gray-700 mb-1">Email</label>
-                <input type="email" id="email" name="email" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
-            </div>
+    <form id="loginForm" class="space-y-5">
+      <div>
+        <label class="block text-gray-700 mb-1">Email</label>
+        <input type="email" id="email" name="email"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
+      </div>
 
-            <div>
-                <label class="block text-gray-700 mb-1">Mot de passe</label>
-                <input type="password" id="password" name="password" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
-            </div>
+      <div>
+        <label class="block text-gray-700 mb-1">Mot de passe</label>
+        <input type="password" id="password" name="password"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
+      </div>
 
-            <button type="submit" class="w-full bg-indigo-500 text-white py-2 rounded-lg font-semibold hover:bg-indigo-600 transition">
+      <button type="submit" class="w-full bg-indigo-500 text-white py-2 rounded-lg font-semibold hover:bg-indigo-600 transition">
         Se connecter
       </button>
-        </form>
+    </form>
 
-        <p class="mt-4 text-center text-gray-600">
-            Pas encore de compte ?
-            <a href="{{ url_for('main.register') }}" class="text-indigo-500 hover:underline">Inscrivez-vous</a>
-        </p>
-    </div>
+    <p class="mt-4 text-center text-gray-600">
+      Pas encore de compte ? 
+      <a href="{{ url_for('main.register') }}" class="text-indigo-500 hover:underline">Inscrivez-vous</a>
+    </p>
+  </div>
 
+  <script>
+    // ⚙ Configuration Firebase (remplace par ta vraie config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyATMOmADodvwOE17WKKIrfEIPv1xQWJKpU",
+      authDomain: "ton-projet.firebaseapp.com",
+      projectId: "ton-projet",
+      storageBucket: "ton-projet.appspot.com",
+      messagingSenderId: "1234567890",
+      appId: "1:1234567890:web:abcdef123456"
+    };
 
+    // Initialisation Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // 🔑 Connexion
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        alert("Connexion réussie !");
+        window.location.href = "{{ url_for('main.tasks') }}";
+      } catch (error) {
+        alert("Erreur : " + error.message);
+      }
+    });
+  </script>
 </body>
-
 </html>
