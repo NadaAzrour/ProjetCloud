@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `todolist`
 --
-
+CREATE DATABASE IF NOT EXISTS `todolist`;
+USE `todolist`;
 -- --------------------------------------------------------
 
 --
@@ -57,9 +58,12 @@ INSERT INTO `tasks` (`id`, `title`, `priority`, `category`, `completed`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
+  `nom` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
 -- Index pour les tables déchargées
@@ -78,6 +82,8 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
+-- --------------------------------------------------------
+
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
@@ -93,8 +99,10 @@ ALTER TABLE `tasks`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
