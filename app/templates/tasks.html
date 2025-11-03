@@ -89,5 +89,75 @@
     </div>
 
 </body>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // 🔹 Config Firebase (TA VRAIE CONFIG)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAo4rKEUQw0SGTk9vNDUu9x61yFDJbSFyo",
+    authDomain: "to-do-list-cloud-7fd86.firebaseapp.com",
+    projectId: "to-do-list-cloud-7fd86",
+    storageBucket: "to-do-list-cloud-7fd86.firebasestorage.app",
+    messagingSenderId: "918724312603",
+    appId: "1:918724312603:web:a5e998c94cfc93c7fc42be",
+    measurementId: "G-GETM6FF949"
+  };
+
+  // 🔹 Initialiser Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  const userUid = localStorage.getItem("userUid");
+  if(!userUid){
+    window.location.href = "login.html"; // redirection si non connecté
+  }
+
+  // 🔹 Ajouter une tâche
+  const taskForm = document.getElementById('taskForm');
+  taskForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('title').value;
+    const priority = document.getElementById('priority').value;
+    const category = document.getElementById('category').value;
+
+    await db.collection("tasks").add({
+      title,
+      priority,
+      category,
+      uid: userUid,
+      status: "En cours",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    taskForm.reset();
+  });
+
+  // 🔹 Afficher les tâches
+  const tasksList = document.getElementById('tasksList');
+  db.collection("tasks").where("uid", "==", userUid)
+    .orderBy("createdAt", "desc")
+    .onSnapshot(snapshot => {
+      tasksList.innerHTML = "";
+      snapshot.forEach(doc => {
+        const task = doc.data();
+        tasksList.innerHTML += `
+          <li class="py-2 border-b flex justify-between">
+            <span>${task.title} - ${task.priority} - ${task.category}</span>
+            <span>${task.status}</span>
+          </li>
+        `;
+      });
+    });
+
+  // 🔹 Déconnexion
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await auth.signOut();
+    localStorage.removeItem("userUid");
+    window.location.href = "login.html";
+  });
+</script>
 
 </html>

@@ -37,35 +37,49 @@
     </p>
   </div>
 
-  <script>
-    // ⚙ Configuration Firebase (remplace par ta vraie config)
-    const firebaseConfig = {
-      apiKey: "AIzaSyATMOmADodvwOE17WKKIrfEIPv1xQWJKpU",
-      authDomain: "ton-projet.firebaseapp.com",
-      projectId: "ton-projet",
-      storageBucket: "ton-projet.appspot.com",
-      messagingSenderId: "1234567890",
-      appId: "1:1234567890:web:abcdef123456"
-    };
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-    // Initialisation Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+<script>
+  // 🔹 Config Firebase (TA VRAIE CONFIG)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAo4rKEUQw0SGTk9vNDUu9x61yFDJbSFyo",
+    authDomain: "to-do-list-cloud-7fd86.firebaseapp.com",
+    projectId: "to-do-list-cloud-7fd86",
+    storageBucket: "to-do-list-cloud-7fd86.firebasestorage.app",
+    messagingSenderId: "918724312603",
+    appId: "1:918724312603:web:a5e998c94cfc93c7fc42be",
+    measurementId: "G-GETM6FF949"
+  };
 
-    // 🔑 Connexion
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+  // 🔹 Initialiser Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-      try {
-        await auth.signInWithEmailAndPassword(email, password);
-        alert("Connexion réussie !");
-        window.location.href = "{{ url_for('main.tasks') }}";
-      } catch (error) {
-        alert("Erreur : " + error.message);
-      }
-    });
-  </script>
+  // 🔹 Connexion
+  const loginForm = document.getElementById('loginForm');
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      // Stocker uid pour récupérer les tâches
+      localStorage.setItem("userUid", user.uid);
+
+      alert("Connexion réussie !");
+      window.location.href = "tasks.html";
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+</script>
+
 </body>
 </html>
