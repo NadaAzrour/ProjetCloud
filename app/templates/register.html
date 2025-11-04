@@ -2,65 +2,75 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Inscription</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      background: #f4f7fa;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .card {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .flash {
-      margin-bottom: 10px;
-      padding: 8px 12px;
-      border-radius: 5px;
-      color: white;
-    }
-    .flash.success { background-color: #28a745; }
-    .flash.error { background-color: #dc3545; }
-    .flash.info { background-color: #17a2b8; }
-  </style>
+  <title>Inscription - ToDo List Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="card">
-    <h3 class="text-center mb-4"><i class="fas fa-user-plus"></i> Inscription</h3>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
-    <!-- Flash messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+  <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-indigo-600 mb-6">Inscription</h2>
 
-    <form method="POST" action="{{ url_for('main.register') }}">
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" name="email" id="email" required>
+    <form id="registerForm" class="space-y-5">
+      
+      <!-- Prénom -->
+      <div>
+        <label class="block text-gray-700 mb-1">Prénom</label>
+        <input type="text" name="firstName" placeholder="Prénom"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
       </div>
 
-      <div class="mb-3">
-        <label for="password" class="form-label">Mot de passe</label>
-        <input type="password" class="form-control" name="password" id="password" required>
+      <!-- Nom -->
+      <div>
+        <label class="block text-gray-700 mb-1">Nom</label>
+        <input type="text" name="lastName" placeholder="Nom"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
       </div>
 
-      <button type="submit" class="btn btn-success w-100"><i class="fas fa-user-plus"></i> S’inscrire</button>
+      <!-- Email -->
+      <div>
+        <label class="block text-gray-700 mb-1">Email</label>
+        <input type="email" name="email" placeholder="Email"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
+      </div>
+
+      <!-- Niveau d'étude -->
+      <div>
+        <label class="block text-gray-700 mb-1">Niveau d'étude</label>
+        <select name="niveauEtude" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
+          <option value="">Sélectionner le niveau d'étude</option>
+          <option value="Licence">Licence</option>
+          <option value="Master">Master</option>
+          <option value="Doctorat">Doctorat</option>
+        </select>
+      </div>
+
+      <!-- Mot de passe -->
+      <div>
+        <label class="block text-gray-700 mb-1">Mot de passe</label>
+        <input type="password" name="password" placeholder="Mot de passe"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
+      </div>
+
+      <!-- Confirmer mot de passe -->
+      <div>
+        <label class="block text-gray-700 mb-1">Confirmer mot de passe</label>
+        <input type="password" name="confirmPassword" placeholder="Confirmer mot de passe"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400" required>
+      </div>
+
+      <button type="submit" class="w-full bg-indigo-500 text-white py-2 rounded-lg font-semibold hover:bg-indigo-600 transition">
+        S’inscrire
+      </button>
     </form>
 
-    <p class="text-center mt-3">Déjà un compte ? <a href="{{ url_for('main.login') }}">Se connecter</a></p>
+    <p class="mt-4 text-center text-gray-600">
+      Déjà inscrit ? 
+      <a href="/login" class="text-indigo-500 hover:underline">Se connecter</a>
+    </p>
   </div>
+
+  <script type="module" src="/static/js/auth.js"></script>
+
 </body>
 </html>
