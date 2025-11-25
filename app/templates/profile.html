@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Profil - ToDo Cloud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen font-[Poppins] p-6">
+
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-indigo-600 px-8 py-6 flex justify-between items-center">
+            <h1 class="text-white text-2xl font-bold">Mon Profil</h1>
+            <a href="/tasks" class="text-indigo-200 hover:text-white transition">← Retour aux tâches</a>
+        </div>
+
+        <div class="p-8">
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative group cursor-pointer" onclick="document.getElementById('fileInput').click()">
+                    <img id="profileImage" src="https://via.placeholder.com/150" 
+                         class="w-32 h-32 rounded-full object-cover border-4 border-indigo-100 shadow-lg">
+                    <div class="absolute inset-0 bg-black bg-opacity-40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                        <span class="text-white font-semibold">Modifier</span>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" class="hidden" accept="image/*">
+                <p class="text-gray-500 text-sm mt-2">Cliquez sur l'image pour changer</p>
+            </div>
+
+            <form id="profileForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 mb-1 font-semibold">Prénom</label>
+                        <input type="text" id="firstName" class="w-full border rounded-lg px-3 py-2 bg-gray-50">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-1 font-semibold">Nom</label>
+                        <input type="text" id="lastName" class="w-full border rounded-lg px-3 py-2 bg-gray-50">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-1 font-semibold">Email</label>
+                    <input type="email" id="email" class="w-full border rounded-lg px-3 py-2 bg-gray-200 cursor-not-allowed" disabled>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-1 font-semibold">Niveau d'étude</label>
+                    <select id="niveauEtude" class="w-full border rounded-lg px-3 py-2">
+                        <option value="Licence">Licence</option>
+                        <option value="Master">Master</option>
+                        <option value="Doctorat">Doctorat</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-md transition mt-6">
+                    💾 Enregistrer les modifications
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/static/js/profile.js"></script>
+</body>
+</html>

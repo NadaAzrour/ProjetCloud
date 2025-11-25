@@ -1,21 +1,81 @@
 import { db, auth } from "./firebase_config.js";
-import { collection, addDoc, getDocs, query, where, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
+// CORRECTION ICI : J'ai ajouté 'getDoc' dans les imports
+import { collection, addDoc, getDocs, query, where, updateDoc, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
+// --- DOM ELEMENTS ---
 const tasksList = document.getElementById("tasksList");
 const taskForm = document.getElementById("taskForm");
 const logoutBtn = document.getElementById("logoutBtn");
+const profileBtn = document.getElementById("profileBtn");
+const dropdownMenu = document.getElementById("dropdownMenu");
+const navProfileImage = document.getElementById("navProfileImage");
+const userGreeting = document.getElementById("userGreeting"); // Ajouté pour gérer le message de bienvenue
+
 let currentUser = null;
 
-// Déconnexion avec confirmation
-logoutBtn.addEventListener("click", async () => {
-    const confirme = confirm("Voulez-vous vraiment vous déconnecter ?");
-    if (confirme) {
-        await signOut(auth);
+// --- GESTION DECONNEXION ---
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+        const confirme = confirm("Voulez-vous vraiment vous déconnecter ?");
+        if (confirme) {
+            await signOut(auth);
+            window.location.href = "/login";
+        }
+    });
+}
+
+// --- GESTION DU MENU DROPDOWN ---
+if (profileBtn) {
+    profileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("hidden");
+    });
+}
+
+document.addEventListener("click", () => {
+    if (dropdownMenu && !dropdownMenu.classList.contains("hidden")) {
+        dropdownMenu.classList.add("hidden");
+    }
+});
+
+// --- LOGIQUE PRINCIPALE (Authentification + Chargement Données) ---
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        console.log("UID connecté :", user.uid);
+        currentUser = user;
+
+        // 1. Charger les tâches
+        renderTasks();
+
+        // 2. Charger les infos profil (Image + Nom)
+        try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                
+                // Mise à jour de l'image dans la navbar
+                if (navProfileImage && data.photoBase64) {
+                    navProfileImage.src = data.photoBase64;
+                }
+
+                // Mise à jour du message de bienvenue (Bonjour Prénom)
+                if (userGreeting && data.firstName) {
+                    userGreeting.textContent = `Bonjour ${data.firstName} !`;
+                }
+            }
+        } catch (error) {
+            console.error("Erreur chargement profil :", error);
+        }
+
+    } else {
+        // Si pas connecté, rediriger vers login
         window.location.href = "/login";
     }
 });
 
+// --- FONCTIONS TACHES ---
 
 // Affichage des tâches
 async function renderTasks() {
@@ -48,6 +108,7 @@ async function renderTasks() {
         `;
         tasksList.appendChild(tr);
 
+        // Events boutons
         tr.querySelector(".toggle").addEventListener("click", async () => {
             const ref = doc(db, "tasks", docSnap.id);
             await updateDoc(ref, { completed: !task.completed });
@@ -64,31 +125,22 @@ async function renderTasks() {
 }
 
 // Ajouter tâche
-taskForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const title = taskForm.title.value;
-    const priority = taskForm.priority.value;
-    const category = taskForm.category.value;
+if (taskForm) {
+    taskForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const title = taskForm.title.value;
+        const priority = taskForm.priority.value;
+        const category = taskForm.category.value;
 
-    await addDoc(collection(db, "tasks"), {
-        uid: currentUser.uid,
-        title,
-        priority,
-        category,
-        completed: false
-    });
+        await addDoc(collection(db, "tasks"), {
+            uid: currentUser.uid,
+            title,
+            priority,
+            category,
+            completed: false
+        });
 
-    taskForm.reset();
-    renderTasks();
-});
-
-// Vérification de l'utilisateur connecté
-onAuthStateChanged(auth, user => {
-    if (user) {
-        console.log("UID de l'utilisateur connecté :", user.uid);
-        currentUser = user;
+        taskForm.reset();
         renderTasks();
-    } else {
-        window.location.href = "/login";
-    }
-});
+    });
+}

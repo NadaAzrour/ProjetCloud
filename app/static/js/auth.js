@@ -41,7 +41,7 @@ if (registerForm) {
       });
 
       alert("Compte créé avec succès !");
-      window.location.href = "/tasks";
+      window.location.href = "/login";
 
     } catch (err) {
       alert("Erreur : " + err.message);

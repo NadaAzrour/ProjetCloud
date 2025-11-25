@@ -14,12 +14,27 @@
 <body class="bg-gray-100 min-h-screen">
 
     <!-- Barre de navigation -->
-    <nav class="bg-indigo-600 text-white px-6 py-4 flex justify-between items-center shadow-lg">
-            <h1 class="text-2xl font-bold">ToDo List Cloud ☁</h1>
-        <button id="logoutBtn" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
-            Déconnexion
+    <nav class="bg-indigo-600 text-white px-6 py-4 flex justify-between items-center shadow-lg relative">
+    <h1 class="text-2xl font-bold">ToDo List Cloud ☁</h1>
+
+    <div class="relative">
+        <button id="profileBtn" class="focus:outline-none">
+            <img id="navProfileImage" 
+                 src="https://via.placeholder.com/150" 
+                 class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md cursor-pointer hover:opacity-90">
         </button>
-    </nav>
+
+        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-50 overflow-hidden text-gray-700">
+            <a href="/profile" class="block px-4 py-3 hover:bg-gray-100 transition flex items-center gap-2">
+                👤 Gérer le profil
+            </a>
+            <div class="border-t border-gray-100"></div>
+            <button id="logoutBtn" class="block w-full text-left px-4 py-3 hover:bg-red-50 text-red-600 transition flex items-center gap-2">
+                🚪 Déconnexion
+            </button>
+        </div>
+    </div>
+</nav>
         <div class="flex justify-center mt-6">
         <div class="bg-white shadow-md rounded-full px-6 py-2 text-indigo-700 font-semibold text-lg border border-indigo-300">
             <span id="userGreeting"></span>
