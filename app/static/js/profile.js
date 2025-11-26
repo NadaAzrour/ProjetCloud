@@ -32,7 +32,7 @@ onAuthStateChanged(auth, async (user) => {
             lastNameInput.value = data.lastName || "";
             niveauSelect.value = data.niveauEtude || "Licence";
             
-            // Affiche l'image (qu'elle soit Base64 ou URL Cloudinary, ça marche)
+            // Affiche l'image si elle existe (URL Cloudinary ou ancien Base64)
             if (data.photoBase64) {
                 profileImage.src = data.photoBase64;
             }
@@ -67,8 +67,12 @@ fileInput.addEventListener("change", async (e) => {
 
         if (data.error) throw new Error(data.error.message);
 
-        // On récupère l'URL sécurisée (https://...)
-        const imageUrl = data.secure_url;
+        // On récupère l'URL sécurisée
+        let imageUrl = data.secure_url;
+
+        // --- OPTIMISATION CDN ---
+        // Ajout de f_auto (format auto) et q_auto (qualité auto) pour la performance
+        imageUrl = imageUrl.replace("/upload/", "/upload/f_auto,q_auto/");
         
         // On met à jour l'image tout de suite sur l'écran
         profileImage.src = imageUrl;
@@ -103,10 +107,11 @@ profileForm.addEventListener("submit", async (e) => {
             niveauEtude: niveauSelect.value
         };
 
-        // On sauvegarde l'URL Cloudinary (qui est maintenant dans profileImage.src)
-        // On garde le nom de champ 'photoBase64' pour ne pas casser le reste du site, 
-        // mais maintenant il contient une URL propre.
-        if (profileImage.src) {
+        // --- CORRECTION ---
+        // On sauvegarde l'URL Cloudinary (qui commence par http)
+        // On vérifie simplement que src existe et n'est pas le placeholder par défaut
+        if (profileImage.src && profileImage.src.includes("http")) {
+            // On garde le champ 'photoBase64' pour la compatibilité avec tasks.js
             updateData.photoBase64 = profileImage.src;
         }
 
